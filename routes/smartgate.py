@@ -30,7 +30,6 @@ def cam_snap():
         packed_args = [args, callback_url]
         _WORKERS.starmap_async(helpers.execute_cmd_snap, product(packed_args, repeat=2))
     except Exception as e:
-        raise e
         return "`ERROR` " + str(e)
     return '*INFO* Please wait, while we complete your request...'
 

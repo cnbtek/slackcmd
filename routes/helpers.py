@@ -16,7 +16,6 @@ def _prepare_slack_webhook_body(snaps, yard_url):
 			        }
                 }
             )
-        print(f"{yard_url}/rest/enterprise/{snap['imagePath']}")
     return blocks
 
 def callback_slack(body, callback_url, yard_url):
@@ -34,14 +33,10 @@ def execute_cmd_snap(args, callback_url):
     gate = args[1].lower()
     yard_url = config.YARDS_URL[yard]
     api_url = f'{yard_url}/rest/enterprise/gate/ipcam/capture'
-    print(f"DEBUG {api_url}")
     resp = requests.get(api_url)
-    print(f"DEBUG {resp}")
     if (resp.status_code == 200):
         all_snaps = resp.json()
-        print(f"DEBUG {all_snaps}")
         gate_snaps = [s for s in all_snaps if (s is not None) and (s['camId'].lower().startswith(gate))]
-        print(f"DEBUG {gate_snaps}")
         callback_slack(gate_snaps, callback_url, yard_url)
     else:
         callback_slack(
